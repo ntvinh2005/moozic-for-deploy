@@ -1,0 +1,23 @@
+.mood-capture h2 {
+    font-size: 2rem;
+    color: #ffffff;
+    margin-bottom: 15px;
+  }
+  
+  .mood-capture p {
+    font-size: 1.1rem;
+    color: #e0e0e0;
+    max-width: 600px;
+    margin: 0 auto 30px;
+  }
+  
+  .mood-capture video {
+    border: 3px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .mood-capture button {
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }

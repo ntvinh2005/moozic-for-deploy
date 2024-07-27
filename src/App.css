@@ -1,0 +1,56 @@
+.App {
+  text-align: center;
+  font-family: 'Roboto', Arial, sans-serif;
+  min-height: 100vh;
+  position: relative;
+  color: #ffffff;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+header {
+  background-color: transparent;
+  padding: 20px;
+}
+
+main {
+  padding: 20px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+p {
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+video {
+  width: 100%;
+  max-width: 640px;
+  margin: 20px auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  background-color: #50b7f5;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #3a9ad9;
+}
