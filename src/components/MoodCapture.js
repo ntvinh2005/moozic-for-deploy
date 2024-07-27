@@ -40,35 +40,29 @@ const MoodCapture = () => {
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
         const intervalId = setInterval(async () => {
-          if (videoRef.current.readyState === 4) { // Ensure the video is ready
+          if (videoRef.current.readyState === 4) { 
             const videoFeedEl = videoRef.current;
             const canvas = canvasRef.current;
 
-            // Make the canvas the same size and in the same location as the video feed
             canvas.style.left = `${videoFeedEl.offsetLeft}px`;
             canvas.style.top = `${videoFeedEl.offsetTop}px`;
             canvas.width = videoFeedEl.width;
             canvas.height = videoFeedEl.height;
 
-            // Facial detection with points
             let faceAIData = await faceapi.detectAllFaces(videoFeedEl)
               .withFaceLandmarks()
               .withAgeAndGender()
               .withFaceExpressions();
 
-            // Clear the canvas
             const context = canvas.getContext('2d');
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Resize face detection results
             faceAIData = faceapi.resizeResults(faceAIData, videoFeedEl);
 
-            // Draw the results
             faceapi.draw.drawDetections(canvas, faceAIData);
             faceapi.draw.drawFaceLandmarks(canvas, faceAIData);
             faceapi.draw.drawFaceExpressions(canvas, faceAIData);
 
-            // Draw age and gender
             faceAIData.forEach(face => {
               const { age, gender, genderProbability, detection } = face;
               const genderText = `${gender} - ${(genderProbability * 100).toFixed(2)}%`;
@@ -85,7 +79,7 @@ const MoodCapture = () => {
           }
         }, 200);
 
-        return () => clearInterval(intervalId); // Cleanup interval on component unmount
+        return () => clearInterval(intervalId); 
       });
     }
   }, [initialized]);
