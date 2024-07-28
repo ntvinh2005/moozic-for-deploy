@@ -7,9 +7,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'build'),
     filename: 'main.js',
+    publicPath: '/', // Ensure the public path is set correctly
   },
-  mode: 'development',
-  devtool: 'source-map',
+  mode: 'production',
   module: {
     rules: [
       {
@@ -17,14 +17,27 @@ module.exports = {
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: ['@babel/preset-react']
-          }
         },
       },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            options: { minimize: true },
+          },
+        ],
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'assets/[hash][ext][query]',
+        },
       },
     ],
   },
@@ -36,23 +49,26 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
+      filename: 'index.html',
     }),
     new CopyWebpackPlugin({
-        patterns: [
-          {
-            from: path.resolve(__dirname, 'public'),
-            to: 'public', // Ensure the entire public directory is copied
-            globOptions: {
-              ignore: ['**/index.html'], // Ignore index.html to avoid conflict
-            },
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'public'),
+          to: 'public', // Ensure the entire public directory is copied
+          globOptions: {
+            ignore: ['**/index.html'], // Ignore index.html to avoid conflict
           },
-        ],
-      }),
+        },
+      ],
+    }),
   ],
-  devServer: {
-    contentBase: path.join(__dirname, 'build'),
-    compress: true,
-    port: 9000,
-  },
 };
+
+
+/*resolve: {
+    alias: {
+      fs: path.resolve(__dirname, 'empty.js'), // Mock 'fs' module with empty.js
+    },
+  },*/
 
