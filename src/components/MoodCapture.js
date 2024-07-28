@@ -4,7 +4,7 @@ import './MoodCapture.css';
 import Modal from './Modal';
 
 const SPOTIFY_CLIENT_ID = 'bea5b71ce3af47098343af7338805a06';  
-const REDIRECT_URI = 'http://localhost:3000/';      //Need to change when deploy
+const REDIRECT_URI = 'https://moozic.netlify.app/';      //Need to change when deploy
 const SCOPES = [
     'user-read-private',
     'user-read-email',
