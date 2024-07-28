@@ -98,86 +98,118 @@ const MoodCapture = () => {
     }
   }, [initialized]);
 
-
-const fetchTracksBasedOnMood = async (mood) => {
-  const url = `https://api.spotify.com/v1/recommendations?seed_genres=${mood}`;
-  const data = await fetchWithSpotifyAPI(url);
-  return data.tracks;
+  const fetchTracksBasedOnMood = async (mood, energy, valence, tempo) => {
+    const url = `https://api.spotify.com/v1/recommendations?seed_genres=${mood}&min_energy=${energy.min}&max_energy=${energy.max}&min_valence=${valence.min}&max_valence=${valence.max}&target_tempo=${tempo}`;
+    const data = await fetchWithSpotifyAPI(url);
+    return data.tracks;
 };
 
 const fetchTracksBasedOnAge = async (age) => {
-  let url;
-  if (age <= 12) {
-      // Children's music playlist
-      url = `https://api.spotify.com/v1/playlists/37i9dQZF1DWXbMxJaAyCq5/tracks`; // Example playlist ID
-  } else if (age <= 19) {
-      // Teen pop hits
-      url = `https://api.spotify.com/v1/playlists/37i9dQZF1DX1BzILRveYHb/tracks`; // Example playlist ID
-  } else if (age <= 29) {
-      // Young adult hits
-      url = `https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks`; // Example playlist ID
-  } else if (age <= 49) {
-      // Adult contemporary
-      url = `https://api.spotify.com/v1/playlists/37i9dQZF1DX4sWSpwq3LiO/tracks`; // Example playlist ID
-  } else {
-      // Oldies
-      url = `https://api.spotify.com/v1/playlists/37i9dQZF1DXa6YOhGMjjgx/tracks`; // Example playlist ID
-  }
+    let url;
+    if (age <= 12) {
+        url = `https://api.spotify.com/v1/playlists/37i9dQZF1DWXbMxJaAyCq5/tracks`;
+    } else if (age <= 19) {
+        url = `https://api.spotify.com/v1/playlists/37i9dQZF1DX1BzILRveYHb/tracks`;
+    } else if (age <= 29) {
+        url = `https://api.spotify.com/v1/playlists/37i9dQZF1DXcBWIGoYBM5M/tracks`;
+    } else if (age <= 49) {
+        url = `https://api.spotify.com/v1/playlists/37i9dQZF1DX4sWSpwq3LiO/tracks`;
+    } else {
+        url = `https://api.spotify.com/v1/playlists/37i9dQZF1DXa6YOhGMjjgx/tracks`;
+    }
 
-  const data = await fetchWithSpotifyAPI(url);
-  return data.items.map(item => item.track);
+    const data = await fetchWithSpotifyAPI(url);
+    return data.items.map(item => item.track);
 };
 
 const createSpotifyPlaylist = async (tracks) => {
-  const accessToken = localStorage.getItem('accessToken');
-  const userResponse = await fetch('https://api.spotify.com/v1/me', {
-      headers: {
-          Authorization: `Bearer ${accessToken}`,
-      },
-  });
-  const userData = await userResponse.json();
-  const userId = userData.id;
+    const accessToken = localStorage.getItem('accessToken');
+    const userResponse = await fetch('https://api.spotify.com/v1/me', {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    const userData = await userResponse.json();
+    const userId = userData.id;
 
-  const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-      method: 'POST',
-      headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          name: 'Generated Playlist',
-          description: 'A playlist generated based on your mood and age.',
-          public: false,
-      }),
-  });
+    const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            name: 'Generated Playlist',
+            description: 'A playlist generated based on your mood and age.',
+            public: false,
+        }),
+    });
 
-  const playlistData = await createPlaylistResponse.json();
-  const playlistId = playlistData.id;
+    const playlistData = await createPlaylistResponse.json();
+    const playlistId = playlistData.id;
 
-  await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-      method: 'POST',
-      headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          uris: tracks.map(track => track.uri),
-      }),
-  });
+    await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+        method: 'POST',
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            uris: tracks.map(track => track.uri),
+        }),
+    });
 
-  return playlistData;
+    return playlistData;
 };
 
 const fetchWithSpotifyAPI = async (url) => {
-  const accessToken = localStorage.getItem('accessToken');
-  const response = await fetch(url, {
-      headers: {
-          Authorization: `Bearer ${accessToken}`,
-      },
-  });
-  const data = await response.json();
-  return data;
+    const accessToken = localStorage.getItem('accessToken');
+    const response = await fetch(url, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    const data = await response.json();
+    return data;
 };
+
+const getMoodParameters = (mood) => {
+    switch (mood) {
+        case 'happy':
+            return {
+                energy: { min: 0.7, max: 1.0 },
+                valence: { min: 0.7, max: 1.0 },
+                tempo: 120,
+            };
+        case 'sad':
+            return {
+                energy: { min: 0.1, max: 0.4 },
+                valence: { min: 0.1, max: 0.4 },
+                tempo: 60,
+            };
+        case 'angry':
+            return {
+                energy: { min: 0.7, max: 1.0 },
+                valence: { min: 0.1, max: 0.4 },
+                tempo: 140,
+            };
+        case 'calm':
+            return {
+                energy: { min: 0.3, max: 0.6 },
+                valence: { min: 0.5, max: 0.8 },
+                tempo: 80,
+            };
+        default:
+            return {
+                energy: { min: 0.4, max: 0.7 },
+                valence: { min: 0.4, max: 0.7 },
+                tempo: 100,
+            };
+    }
+};
+
+
+
 
 const handleAuthentication = () => {
   const hash = window.location.hash;
@@ -202,15 +234,26 @@ const generatePlaylist = async () => {
       const age = faceData[0].age;
 
       const moodType = Object.keys(mood).reduce((a, b) => mood[a] > mood[b] ? a : b);
-      const moodBasedTracks = await fetchTracksBasedOnMood(moodType);
+      console.log('Detected mood:', moodType);
+      console.log('Detected age:', age);
+
+      const { energy, valence, tempo } = getMoodParameters(moodType);
+
+      const moodBasedTracks = await fetchTracksBasedOnMood(moodType, energy, valence, tempo);
+      console.log('Mood based tracks:', moodBasedTracks);
+
       const ageBasedTracks = await fetchTracksBasedOnAge(age);
+      console.log('Age based tracks:', ageBasedTracks);
 
       const combinedTracks = [...moodBasedTracks, ...ageBasedTracks];
+      const shuffledTracks = combinedTracks.sort(() => Math.random() - 0.5);
+      console.log('Shuffled tracks:', shuffledTracks);
 
-      const playlist = await createSpotifyPlaylist(combinedTracks);
+      const playlist = await createSpotifyPlaylist(shuffledTracks);
       setPlaylist(playlist);
-      console.log(playlist)
-      console.log("generated")
+      console.log('Playlist created:', playlist);
+  } else {
+      console.log('No face data detected');
   }
 };
 
