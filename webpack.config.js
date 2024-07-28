@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.js',
@@ -36,6 +37,17 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
+    new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, 'public'),
+            to: 'public', // Ensure the entire public directory is copied
+            globOptions: {
+              ignore: ['**/index.html'], // Ignore index.html to avoid conflict
+            },
+          },
+        ],
+      }),
   ],
   devServer: {
     contentBase: path.join(__dirname, 'build'),
