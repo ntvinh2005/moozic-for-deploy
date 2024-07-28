@@ -4,7 +4,7 @@ import './MoodCapture.css';
 import Modal from './Modal';
 
 const SPOTIFY_CLIENT_ID = 'bea5b71ce3af47098343af7338805a06';  
-const REDIRECT_URI = 'https://moozic.netlify.app/';      //Need to change when deploy
+const REDIRECT_URI = 'http://localhost:3000/';      //Need to change when deploy
 const SCOPES = [
     'user-read-private',
     'user-read-email',
@@ -29,7 +29,8 @@ const MoodCapture = () => {
 
   useEffect(() => {
     const loadModels = async () => {
-      const MODEL_URL = process.env.PUBLIC_URL + '/models';
+      const MODEL_URL = '/models';
+      console.log('Loading models...');
       await Promise.all([
         faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
         faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
@@ -37,11 +38,12 @@ const MoodCapture = () => {
         faceapi.nets.ageGenderNet.loadFromUri(MODEL_URL),
         faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL),
       ]);
+      console.log('Models loaded successfully');
       setInitialized(true);
     };
 
     loadModels();
-  }, [initialized]);
+  }, []);
 
   useEffect(() => {
     if (initialized) {

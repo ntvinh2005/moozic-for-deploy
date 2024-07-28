@@ -2,7 +2,7 @@
   "name": "moozic",
   "version": "0.1.0",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://moozic.netlify.app/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -26,6 +26,11 @@
       "react-app/jest"
     ]
   },
+  "browser": {
+  "fs": false,
+  "path": false,
+  "os": false
+},
   "browserslist": {
     "production": [
       ">0.2%",
