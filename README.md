@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+# MOOZIC
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+Moozic is a React-based web application that creates personalized Spotify playlists based on the user's current mood. The app uses facial expression analysis to detect the user's mood and then generates a playlist of songs that match that mood using Spotify's API and audio features.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Facial mood detection using the device camera
+- Integration with Spotify API for playlist generation
+- Customized playlist creation based on detected mood
+- Responsive design for various screen sizes
+- Beautiful UI with a dynamic background
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- React.js
+- Spotify Web API
+- Local face detection model 
+- CSS for styling
 
-### `npm test`
+## Prerequisites
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Before you begin, ensure you have met the following requirements:
 
-### `npm run build`
+- Node.js and npm installed
+- A Spotify Developer account and API credentials
+- A compatible web browser with camera access
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installation and Setup
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. Clone the repository:
+     git clone https://github.com/your-username/mood-music-playlist-generator.git
+     cd moozic
+2. Install the dependencies
+3. Create a `.env` file in the root directory and add your Spotify API credentials:
+     REACT_APP_SPOTIFY_CLIENT_ID=your_client_id_here
+     REACT_APP_SPOTIFY_CLIENT_SECRET=your_client_secret_here
+     REACT_APP_SPOTIFY_REDIRECT_URI=http://localhost:3000/callback
+4. Start the development server:
+5. Open your browser and navigate to `http://localhost:3000`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Usage
 
-### `npm run eject`
+1. Grant camera access when prompted by the browser.
+2. Look at the camera and click the "Capture Mood" button.
+3. The app will analyze your facial expression and detect your mood.
+4. Click "Generate Playlist" to create a Spotify playlist based on your mood.
+5. Enjoy your personalized mood-based playlist!
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Contributing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Contributions to Moozic are welcome. Please follow these steps:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Fork the repository
+2. Create a new branch: `git checkout -b feature/your-feature-name`
+3. Make your changes and commit them: `git commit -m 'Add some feature'`
+4. Push to the branch: `git push origin feature/your-feature-name`
+5. Submit a pull request
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## License
 
-## Learn More
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Acknowledgements
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Spotify Web API
+- Face detection model used: https://github.com/justadudewhohacks/face-api.js/
+- React.js community
 
-### Code Splitting
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+If you have any questions or feedback, please contact Vinh at ntvinhgv@gmail.com or Gabriel at gabrielkson15@gmail.com
