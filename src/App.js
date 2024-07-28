@@ -3,10 +3,12 @@ import './App.css';
 import Header from './components/Header';
 import MoodCapture from './components/MoodCapture';
 import Background from './components/Background';
+import { FaceDataProvider } from './contexts/faceDataContext';
 
 function App() {
   return (
     <div className="App">
+      <FaceDataProvider>
       <Background />
       <div className="content">
       <Header />
@@ -14,6 +16,7 @@ function App() {
         <MoodCapture />
       </main>
     </div>
+    </FaceDataProvider>
     </div>
   );
 }
