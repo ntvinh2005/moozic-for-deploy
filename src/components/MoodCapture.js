@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as faceapi from 'face-api.js';
 import './MoodCapture.css';
+import Modal from './Modal';
 
 const SPOTIFY_CLIENT_ID = 'bea5b71ce3af47098343af7338805a06';  
 const REDIRECT_URI = 'http://localhost:3000/';      //Need to change when deploy
@@ -19,6 +20,13 @@ const MoodCapture = () => {
   const [faceData, setFaceData] = useState([]);
   const [playlist, setPlaylist] = useState(null);
 
+  const [showModal, setShowModal] = useState(true);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+
   useEffect(() => {
     const loadModels = async () => {
       const MODEL_URL = process.env.PUBLIC_URL + '/models';
@@ -33,7 +41,7 @@ const MoodCapture = () => {
     };
 
     loadModels();
-  }, []);
+  }, [initialized]);
 
   useEffect(() => {
     if (initialized) {
@@ -52,7 +60,7 @@ const MoodCapture = () => {
         faceapi.matchDimensions(canvasRef.current, displaySize);
 
         const intervalId = setInterval(async () => {
-          if (videoRef.current.readyState === 4) { 
+          if (videoRef.current.readyState === 4) {
             const videoFeedEl = videoRef.current;
             const canvas = canvasRef.current;
 
@@ -65,8 +73,6 @@ const MoodCapture = () => {
               .withFaceLandmarks()
               .withAgeAndGender()
               .withFaceExpressions();
-            
-            setFaceData(faceAIData);
 
             const context = canvas.getContext('2d');
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -90,13 +96,23 @@ const MoodCapture = () => {
               const drawBox = new faceapi.draw.DrawBox(detection.box, { label: genderText });
               drawBox.draw(canvas);
             });
+
+            if (faceAIData.length > 0) {
+              setFaceData(faceAIData);
+            }
           }
         }, 200);
 
-        return () => clearInterval(intervalId); 
+        return () => clearInterval(intervalId);
       });
     }
   }, [initialized]);
+
+  useEffect(() => {
+    if (faceData.length > 0) {
+      console.log(faceData);
+    }
+  }, [faceData]);
 
   const fetchTracksBasedOnMood = async (mood, energy, valence, tempo) => {
     const url = `https://api.spotify.com/v1/recommendations?seed_genres=${mood}&min_energy=${energy.min}&max_energy=${energy.max}&min_valence=${valence.min}&max_valence=${valence.max}&target_tempo=${tempo}`;
@@ -229,7 +245,7 @@ useEffect(() => {
 }, []);
 
 const generatePlaylist = async () => {
-  if (faceData && faceData.length > 0) {
+  if (faceData != []) {
       const mood = faceData[0].expressions;
       const age = faceData[0].age;
 
@@ -258,20 +274,21 @@ const generatePlaylist = async () => {
 };
 
   return (
-    <div class = "mood-capture" style={{position: 'relative', width: '720px', height: '560px' }}>
+    <div className = "mood-capture" style={{position: 'relative', width: '720px', height: '560px' }}>
+      <Modal show={showModal} onClose={handleCloseModal} />
       <h2>Capture Your Mood</h2>
       <p>We'll analyze your facial expression to create a custom playlist that matches your mood!</p>
       <video ref={videoRef} autoPlay muted width="720" height="560" />
       <canvas ref={canvasRef} style={{ position: 'absolute' }} />
       <button onClick = {generatePlaylist}>Capture Mood</button>
-      {playlist && (
-                <div>
+      {playlist ? (
+                <div className = "playlist-link">
                     <h3>Playlist Created!</h3>
                     <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer">
                         Open Playlist on Spotify
                     </a>
                 </div>
-            )}
+            ) : (<div className = "playlist-link"><h3>Playlist will be shown here!</h3></div>)}
     </div>
   );
 };

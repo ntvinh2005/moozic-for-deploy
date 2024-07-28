@@ -34,3 +34,27 @@
     margin-right: auto;
     justify-content: center;
   }
+
+  .playlist-link {
+    display: inline-block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #1DB954;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.playlist-link:hover {
+    background-color: #1ed760;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.playlist-link h3 {
+  color:#b21ed7;
+}
+.playlist-link a {
+  color:#495b04;
+}
